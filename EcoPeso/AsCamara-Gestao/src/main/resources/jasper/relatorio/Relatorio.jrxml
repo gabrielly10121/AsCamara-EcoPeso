@@ -1,0 +1,47 @@
+<!-- Created with Jaspersoft Studio version 7.0.2.final using JasperReports Library version 7.0.2-31532122640f516c6d17238ae0e41a08113d5ac0  -->
+<jasperReport name="Relatorio" language="java" columnCount="1" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="16add26c-3c67-4f12-9c7e-e46dd0dae58e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+	<parameter name="tipoMaterial" class="java.lang.String"/>
+	<parameter name="dataInicial" class="java.util.Date"/>
+	<parameter name="dataFinal" class="java.util.Date"/>
+	<parameter name="imgrelatorio" class="java.lang.Object"/>
+	<parameter name="totalMaterialPesado" class="java.lang.Integer"/>
+	<parameter name="pesagemRealizadas" class="java.lang.Integer"/>
+	<parameter name="pesoMedio" class="java.lang.Double"/>
+	<query language="SQL"><![CDATA[]]></query>
+	<background splitType="Stretch"/>
+	<detail>
+		<band height="842" splitType="Stretch">
+			<element kind="image" uuid="e7017d62-3293-4040-b34d-3547381c40bd" x="0" y="0" width="595" height="842">
+				<expression><![CDATA[$P{imgrelatorio}]]></expression>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</element>
+			<element kind="textField" uuid="0d2a78e9-1a62-44d3-9ca0-5c2f4821d93e" x="20" y="180" width="575" height="530" fontName="Georgia" fontSize="18.0">
+				<expression><![CDATA["Período:" +
+
+"Data Inicial:" + $P{dataInicial} +
+
+"Data Final:" + $P{dataFinal} +
+
+"Tipo de Material:" + $P{tipoMaterial} +
+
+
+"Resumo do Relatório:" +
+
+"Este relatório apresenta os dados de pesagem do material" +$P{tipoMaterial} + "entre" + $P{dataInicial} + "e" + $P{dataFinal} + "A seguir, serão apresentados os totais de material pesado durante esse período, com base nas medições realizadas." +
+
+"Detalhamento da Pesagem:" +
+"Durante o período informado, foram realizadas as seguintes pesagens:" +
+
+"Total de Material Pesado:"  +$P{totalMaterialPesado} +
+
+"Pesagens Realizadas: " + $P{pesagemRealizadas} +
+
+"Peso Médio por Pesagem:" + $P{pesoMedio}]]></expression>
+			</element>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+</jasperReport>

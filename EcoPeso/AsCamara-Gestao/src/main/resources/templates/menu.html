@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Principal - Sistema de Reciclagem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+--primary-color: #1b5e20;
+--primary-light: #4caf50;
+--primary-lighter: #81c784;
+--secondary-color: #d32f2f;
+--white: #ffffff;
+--light-bg: #e8f5e9;
+--dark-text: #263238;
+--box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+--sidebar-width: 280px;
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Poppins', sans-serif;
+}
+
+body {
+background-color: var(--light-bg);
+display: flex;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+.sidebar {
+width: var(--sidebar-width);
+background-color: var(--primary-color);
+color: var(--white);
+height: 100vh;
+position: fixed;
+transition: all 0.3s;
+box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+z-index: 1000;
+}
+
+.sidebar-header {
+padding: 20px;
+text-align: center;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h3 {
+color: var(--white);
+font-weight: 600;
+margin-bottom: 5px;
+}
+
+.sidebar-header p {
+font-size: 12px;
+opacity: 0.8;
+}
+
+.user-profile {
+display: flex;
+align-items: center;
+padding: 20px;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+background-color: var(--primary-light);
+display: flex;
+align-items: center;
+justify-content: center;
+margin-right: 10px;
+}
+
+.user-avatar i {
+color: var(--white);
+font-size: 18px;
+}
+
+.user-info h4 {
+font-size: 14px;
+font-weight: 500;
+margin-bottom: 3px;
+}
+
+.user-info span {
+font-size: 12px;
+opacity: 0.8;
+}
+
+.sidebar-menu {
+padding: 20px 0;
+}
+
+.sidebar-menu ul {
+list-style: none;
+}
+
+.sidebar-menu li {
+position: relative;
+}
+
+.sidebar-menu li a {
+display: flex;
+align-items: center;
+padding: 12px 20px;
+color: var(--white);
+text-decoration: none;
+transition: all 0.3s;
+font-size: 14px;
+}
+
+.sidebar-menu li a:hover {
+background-color: rgba(255, 255, 255, 0.1);
+padding-left: 25px;
+}
+
+.sidebar-menu li a i {
+margin-right: 10px;
+font-size: 16px;
+width: 20px;
+text-align: center;
+}
+
+.sidebar-menu .submenu {
+padding-left: 20px;
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s ease-out;
+}
+
+.sidebar-menu .submenu li a {
+padding: 10px 20px;
+font-size: 13px;
+background-color: rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-menu .has-submenu > a::after {
+content: '\f078';
+font-family: 'Font Awesome 6 Free';
+font-weight: 900;
+position: absolute;
+right: 20px;
+transition: transform 0.3s;
+font-size: 12px;
+}
+
+.sidebar-menu .has-submenu.active > a::after {
+transform: rotate(180deg);
+}
+
+.main-content {
+flex: 1;
+margin-left: var(--sidebar-width);
+padding: 30px;
+transition: all 0.3s;
+}
+
+.header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 30px;
+}
+
+.page-title h1 {
+color: var(--primary-color);
+font-size: 24px;
+font-weight: 600;
+}
+
+.page-title p {
+color: var(--dark-text);
+font-size: 14px;
+opacity: 0.8;
+}
+
+.logout-btn {
+background-color: var(--secondary-color);
+color: var(--white);
+border: none;
+padding: 10px 20px;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 500;
+transition: all 0.3s;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.logout-btn:hover {
+background-color: #c62828;
+transform: translateY(-2px);
+}
+
+.cards-container {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 20px;
+}
+
+.card {
+background-color: var(--white);
+border-radius: 12px;
+padding: 25px;
+box-shadow: var(--box-shadow);
+transition: all 0.3s;
+text-align: center;
+cursor: pointer;
+border-top: 4px solid var(--primary-color);
+}
+
+.card:hover {
+transform: translateY(-5px);
+box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card i {
+font-size: 40px;
+color: var(--primary-color);
+margin-bottom: 15px;
+}
+
+.card h3 {
+color: var(--primary-color);
+margin-bottom: 10px;
+font-size: 18px;
+}
+
+.card p {
+color: var(--dark-text);
+font-size: 14px;
+margin-bottom: 15px;
+opacity: 0.8;
+}
+
+.card-btn {
+background-color: var(--primary-color);
+color: var(--white);
+border: none;
+padding: 8px 15px;
+border-radius: 6px;
+font-size: 14px;
+cursor: pointer;
+transition: all 0.3s;
+}
+
+.card-btn:hover {
+background-color: var(--primary-light);
+}
+
+.welcome-message {
+background-color: var(--white);
+padding: 20px;
+border-radius: 12px;
+box-shadow: var(--box-shadow);
+margin-bottom: 30px;
+border-left: 4px solid var(--primary-color);
+}
+
+.welcome-message h2 {
+color: var(--primary-color);
+margin-bottom: 10px;
+font-size: 20px;
+}
+
+.welcome-message p {
+color: var(--dark-text);
+font-size: 14px;
+opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+.sidebar {
+width: 80px;
+overflow: hidden;
+}
+
+.sidebar-header h3,
+.user-info,
+.sidebar-menu li a span {
+display: none;
+}
+
+.sidebar-menu li a {
+justify-content: center;
+padding: 15px;
+}
+
+.sidebar-menu li a i {
+margin-right: 0;
+font-size: 18px;
+}
+
+.main-content {
+margin-left: 80px;
+}
+}
+
+@media (max-width: 576px) {
+.cards-container {
+grid-template-columns: 1fr;
+}
+
+.header {
+flex-direction: column;
+align-items: flex-start;
+gap: 15px;
+}
+}
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h3>Sistema de Reciclagem</h3>
+        <p>Gestão de Materiais</p>
+    </div>
+
+    <div class="user-profile">
+        <div class="user-avatar">
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="user-info">
+            <h4>Usuário</h4>
+            <span></span>
+        </div>
+    </div>
+
+    <div class="sidebar-menu">
+        <ul>
+            <li>
+                <a th:href="@{/menu}">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="has-submenu">
+                <a href="#">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Cadastros</span>
+                </a>
+                <ul class="submenu">
+                    <li>
+                        <a th:href="@{/cadastro/usuario}">
+                            <i class="fas fa-user-plus" onclick="window.location.href='./cadastro_usuario'"></i>
+                            <span>Usuários</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/materiais/cadastro}">
+                            <i class="fas fa-box-open" onclick="window.location.href='./cadastro_material'"></i>
+                            <span>Materiais</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a th:href="@{/pesagem}">
+                    <i class="fas fa-weight" onclick="window.location.href='./pesagem'"></i>
+                    <span>Pesagem</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/relatorio}">
+                    <i class="fas fa-file-alt" onclick="window.location.href='./relatorio'"></i>
+                    <span>Relatórios</span>
+                </a>
+            </li>
+            <li>
+            <a th:href="@{/gerenciar_usuario}">
+                <i class="fas fa-users-cog"></i>
+                <span>Gerenciar Usuários</span>
+                </a>
+            </li>
+            <li>
+                <form id="logoutForm" th:action="@{/logout}" method="post">
+                    <a href="./login" onclick="document.getElementById('logoutForm').submit()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="main-content">
+    <div class="header">
+        <div class="page-title">
+            <h1>Dashboard</h1>
+            <p>Bem-vindo ao sistema de gestão de reciclagem</p>
+        </div>
+
+        <button class="logout-btn"   onclick="window.location.href='./login'" >
+            <i class="fas fa-sign-out-alt" ></i> Sair
+        </button>
+    </div>
+
+    <div class="welcome-message">
+        <h2>Olá, <span>Usuário</span>!</h2>
+        <p>Você está logado no sistema de gestão de materiais recicláveis.</p>
+    </div>
+
+    <div class="cards-container">
+        <div class="card" onclick="window.location.href='./pesagem'">
+            <i class="fas fa-weight"></i>
+            <h3>Pesagem</h3>
+            <p>Registre a pesagem de materiais recicláveis</p>
+            <button class="card-btn">Acessar</button>
+        </div>
+
+        <div class="card" onclick="window.location.href='./materiais/cadastro'">
+            <i class="fas fa-box-open"></i>
+            <h3>Cadastro de Materiais</h3>
+            <p>Cadastre novos materiais recicláveis</p>
+            <button class="card-btn">Acessar</button>
+        </div>
+
+        <div class="card" onclick="window.location.href='/relatorio'">
+            <i class="fas fa-file-alt"></i>
+            <h3>Relatórios</h3>
+            <p>Gere relatórios de pesagem e materiais</p>
+            <button class="card-btn">Acessar</button>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-users-cog"></i>
+            <h3>Gerenciar Usuários</h3>
+            <p>Administre os usuários do sistema</p>
+            <button class="card-btn" onclick="window.location.href='./gerenciar_usuario'">Acessar</button>
+        </div>
+    </div>
+    </div>
+</div>
+
+<script>
+
+        document.querySelectorAll('.has-submenu > a').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const submenu = this.parentElement.querySelector('.submenu');
+                const isActive = this.parentElement.classList.contains('active');
+
+
+                document.querySelectorAll('.has-submenu').forEach(el => {
+                    if (el !== this.parentElement) {
+                        el.classList.remove('active');
+                        el.querySelector('.submenu').style.maxHeight = '0';
+                    }
+                });
+
+
+                if (isActive) {
+                    this.parentElement.classList.remove('active');
+                    submenu.style.maxHeight = '0';
+                } else {
+                    this.parentElement.classList.add('active');
+                    submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

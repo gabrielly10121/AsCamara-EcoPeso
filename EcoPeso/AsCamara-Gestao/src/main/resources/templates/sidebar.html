@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{sidebar :: sidebar}"></div>
+
+<div th:fragment="sidebar">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Sistema de Reciclagem</h3>
+            <p>Gestão de Materiais</p>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <h4>Usuário</h4>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a th:href="@{/menu}">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Cadastros</span>
+                    </a>
+                    <ul class="submenu">
+                        <li>
+                            <a th:href="@{/cadastro/usuario}">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Usuários</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/materiais/cadastro}">
+                                <i class="fas fa-box-open"></i>
+                                <span>Materiais</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a th:href="@{/pesagem}">
+                        <i class="fas fa-weight"></i>
+                        <span>Pesagem</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/relatorio}">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Relatórios</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/gerenciar_usuario}">
+                        <i class="fas fa-users-cog"></i>
+                        <span>Gerenciar Usuários</span>
+                    </a>
+                </li>
+                <li>
+                    <form th:action="@{/logout}" method="post">
+                        <a href="#" onclick="this.closest('form').submit()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Sair</span>
+                        </a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

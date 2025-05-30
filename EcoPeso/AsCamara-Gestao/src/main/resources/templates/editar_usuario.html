@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Usuário - Sistema de Reciclagem</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+  <style>
+    :root {
+        --primary-color: #1b5e20;
+        --primary-light: #4caf50;
+        --secondary-color: #d32f2f;
+        --white: #ffffff;
+        --light-bg: #e8f5e9;
+        --dark-text: #263238;
+        --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    body {
+        background-color: var(--light-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-image: linear-gradient(to bottom right, #e8f5e9, #c8e6c9);
+    }
+    .register-container {
+        width: 100%;
+        max-width: 500px;
+        background: var(--white);
+        border-radius: 16px;
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+        padding: 40px;
+        margin: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    .register-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+    }
+    .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+    .back-link:hover {
+        color: var(--primary-light);
+        text-decoration: underline;
+    }
+    .logo {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .logo i {
+        font-size: 48px;
+        color: var(--primary-color);
+        background-color: #e8f5e9;
+        padding: 20px;
+        border-radius: 50%;
+    }
+    .register-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .register-header h2 {
+        color: var(--primary-color);
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    .register-header p {
+        color: var(--dark-text);
+        font-size: 16px;
+    }
+    h1 {
+        text-align: center;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--dark-text);
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .form-control {
+        width: 100%;
+        padding: 14px 15px 14px 45px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s;
+        background-color: #f5f5f5;
+    }
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-light);
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        background-color: var(--white);
+    }
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 40px;
+        color: var(--primary-color);
+        font-size: 18px;
+    }
+    .btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: var(--white);
+        margin-top: 10px;
+    }
+    .btn-primary:hover {
+        background-color: var(--primary-light);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .role-selector {
+        margin-top: 15px;
+    }
+    .role-selector label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+    .role-selector input {
+        margin-right: 10px;
+    }
+    .password-note {
+        font-size: 12px;
+        color: #757575;
+        margin-top: 5px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="register-container">
+
+
+  <a th:href="@{/gerenciar_usuario}" class="back-link">
+    <i class="fas fa-arrow-left"></i> Voltar
+  </a>
+
+
+  <div class="logo">
+    <i class="fas fa-user-edit"></i>
+  </div>
+
+
+  <div class="register-header">
+    <h2>Editar Usuário</h2>
+    <p>Página de Edição funcionando!</p>
+  </div>
+
+
+  <form th:action="@{/gerenciar_usuario/editar_usuario/{id}(id=${usuarioId})}"
+        method="post"
+        th:object="${usuarioDto}">
+    <input type="hidden" th:field="*{id}">
+
+    <div class="form-group">
+      <label for="nome">Nome</label>
+      <i class="fas fa-user input-icon"></i>
+      <input type="text" class="form-control" id="nome" th:field="*{nome}" placeholder="Digite o nome completo" required>
+    </div>
+
+    <div class="form-group">
+      <label for="sobrenome">Sobrenome</label>
+      <i class="fas fa-user input-icon"></i>
+      <input type="text" class="form-control" id="sobrenome" th:field="*{sobrenome}" placeholder="Digite o sobrenome">
+    </div>
+
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <i class="fas fa-envelope input-icon"></i>
+      <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="exemplo@gmail.com" required>
+    </div>
+
+    <div class="form-group">
+      <label for="username">Nome de Usuário</label>
+      <i class="fas fa-at input-icon"></i>
+      <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Nome de usuário único" required>
+    </div>
+
+    <div class="form-group">
+      <label for="senha">Nova Senha (opcional)</label>
+      <i class="fas fa-lock input-icon"></i>
+      <input type="password" class="form-control" id="senha" th:field="*{senha}" placeholder="Deixe em branco para manter a senha atual">
+      <p class="password-note">Preencha apenas se desejar alterar a senha</p>
+    </div>
+
+    <div class="role-selector">
+      <label>Tipo de Usuário</label>
+      <div>
+        <label>
+          <input type="radio" th:field="*{role}" value="ROLE_USER">
+          Usuário Normal
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="radio" th:field="*{role}" value="ROLE_ADMIN">
+          Administrador
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+      <i class="fas fa-save"></i> Salvar Alterações
+    </button>
+  </form>
+</div>
+
+</body>
+</html>

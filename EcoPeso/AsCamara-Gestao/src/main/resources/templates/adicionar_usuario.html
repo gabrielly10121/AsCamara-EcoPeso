@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastrar Usuário - Sistema de Reciclagem</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #1b5e20;
+      --primary-light: #4caf50;
+      --secondary-color: #d32f2f;
+      --white: #ffffff;
+      --light-bg: #e8f5e9;
+      --dark-text: #263238;
+      --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-image: linear-gradient(to bottom right, #e8f5e9, #c8e6c9);
+    }
+
+    .register-container {
+      width: 100%;
+      max-width: 500px;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      padding: 40px;
+      margin: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .register-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .back-link:hover {
+      color: var(--primary-light);
+      text-decoration: underline;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo i {
+      font-size: 48px;
+      color: var(--primary-color);
+      background-color: #e8f5e9;
+      padding: 20px;
+      border-radius: 50%;
+    }
+
+    .register-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .register-header h2 {
+      color: var(--primary-color);
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .register-header p {
+      color: var(--dark-text);
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--dark-text);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 15px 14px 45px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s;
+      background-color: #f5f5f5;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+      background-color: var(--white);
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 40px;
+      color: var(--primary-color);
+      font-size: 18px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: var(--white);
+      margin-top: 10px;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary {
+      background-color: #757575;
+      color: white;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #616161;
+    }
+
+    .role-selector {
+      margin-top: 15px;
+    }
+
+    .role-selector label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .role-selector input {
+      margin-right: 10px;
+    }
+
+    .error-message {
+      color: var(--secondary-color);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 480px) {
+      .register-container {
+        padding: 30px 20px;
+        margin: 15px;
+      }
+
+      .logo i {
+        font-size: 40px;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="register-container">
+  <a th:href="@{/gerenciar_usuario}" class="back-link" onclick="window.location.href='./login.html'">
+    <i class="fas fa-arrow-left"></i> Voltar
+  </a>
+
+  <div class="logo">
+    <i class="fas fa-user-plus"></i>
+  </div>
+
+  <div class="register-header">
+    <h2>Cadastrar Novo Usuário</h2>
+    <p>Preencha os dados para cadastrar um novo usuário</p>
+  </div>
+
+  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+  <form th:action="@{/gerenciar_usuario/adicionar_usuario}" method="post" th:object="${usuarioDto}">
+    <div class="form-group">
+      <label for="nome">Nome</label>
+      <i class="fas fa-user input-icon"></i>
+      <input type="text" class="form-control" id="nome" th:field="*{nome}"
+             placeholder="Digite o nome completo" required>
+    </div>
+
+    <div class="form-group">
+      <label for="sobrenome">Sobrenome</label>
+      <i class="fas fa-user input-icon"></i>
+      <input type="text" class="form-control" id="sobrenome" th:field="*{sobrenome}"
+             placeholder="Digite o sobrenome">
+    </div>
+
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <i class="fas fa-envelope input-icon"></i>
+      <input type="email" class="form-control" id="email" th:field="*{email}"
+             placeholder="exemplo@gmail.com" required>
+    </div>
+
+    <div class="form-group">
+      <label for="username">Nome de Usuário</label>
+      <i class="fas fa-at input-icon"></i>
+      <input type="text" class="form-control" id="username" th:field="*{username}"
+             placeholder="Crie um nome de usuário único" required>
+    </div>
+
+    <div class="form-group">
+      <label for="senha">Senha</label>
+      <i class="fas fa-lock input-icon"></i>
+      <input type="password" class="form-control" id="senha" th:field="*{senha}"
+             placeholder="Mínimo 6 caracteres" required minlength="6">
+    </div>
+
+    <div class="form-group">
+      <label for="confirmarSenha">Confirmar Senha</label>
+      <i class="fas fa-lock input-icon"></i>
+      <input type="password" class="form-control" id="confirmarSenha" th:field="*{confirmarSenha}"
+             placeholder="Repita a senha" required>
+    </div>
+
+    <div class="role-selector">
+      <label>Tipo de Usuário</label>
+      <div>
+        <label>
+          <input type="radio" name="role" th:field="*{role}" value="ROLE_USER" checked>
+          Usuário Normal
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="radio" name="role" th:field="*{role}" value="ROLE_ADMIN">
+          Administrador
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" >
+      <i class="fas fa-user-plus" ></i> Cadastrar Usuário
+    </button>
+  </form>
+</div>
+
+<script>
+
+  document.getElementById('confirmarSenha').addEventListener('input', function() {
+    const senha = document.getElementById('senha').value;
+    const confirmarSenha = this.value;
+
+    if (senha !== confirmarSenha) {
+      this.setCustomValidity("As senhas não coincidem");
+    } else {
+      this.setCustomValidity('');
+    }
+  });
+
+
+  document.getElementById('email').addEventListener('change', function() {
+    if (!this.value.endsWith('@gmail.com')) {
+      this.setCustomValidity("O email deve terminar com @gmail.com");
+    } else {
+      this.setCustomValidity('');
+    }
+  });
+</script>
+</body>
+</html>

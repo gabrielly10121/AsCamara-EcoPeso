@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório</title>
+    <style>
+        :root {
+            --primary-color: #1b5e20;
+            --primary-light: #4caf50;
+            --secondary-color: #d32f2f;
+            --secondary-light: #f44336;
+            --background: #e8f5e9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --spacing-unit: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: var(--spacing-unit) 0;
+            margin-bottom: var(--spacing-unit);
+            box-shadow: var(--box-shadow);
+        }
+
+        .header h2 {
+            font-weight: 500;
+            font-size: 1.8rem;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: calc(var(--spacing-unit) * 1.5);
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .form-group {
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+
+        .date-range {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .date-range span {
+            color: #666;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-light);
+            transform: translateY(-2px);
+        }
+
+        .format-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .format-buttons .btn {
+            flex: 1;
+        }
+
+        .btn-sair {
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 0 12px;
+                padding: 20px;
+            }
+
+            .format-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .date-range {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .date-range span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="header">
+    <h2>Gerar Relatório</h2>
+</div>
+<div class="container">
+    <form id="relatorioForm">
+        <div class="form-group">
+            <label for="tipoMaterial">Tipo de Material</label>
+            <select class="form-control" id="tipoMaterial" name="tipoMaterial" required>
+                <option value="">Selecione um tipo de material</option>
+                <option th:each="tipo : ${tiposMateriais}"
+                        th:value="${tipo}"
+                        th:text="${tipo}"
+                        th:disabled="${#strings.isEmpty(tipo)}"></option>
+                <option th:if="${tiposMateriais == null || tiposMateriais.isEmpty()}"
+                        value="" disabled selected>Nenhum tipo de material cadastrado</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Período</label>
+            <div class="date-range">
+                <input type="date" class="form-control" name="dataInicial" id="dataInicial" required>
+                <span>até</span>
+                <input type="date" class="form-control" name="dataFinal" id="dataFinal" required>
+            </div>
+        </div>
+
+        <div class="format-buttons">
+            <button type="button" class="btn btn-primary" onclick="gerarRelatorio('pdf')">
+                <i class="fas fa-file-pdf"></i> Gerar PDF
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="gerarRelatorio('excel')">
+                <i class="fas fa-file-excel"></i> Gerar Excel
+            </button>
+        </div>
+    </form>
+
+    <button type="button" class="btn btn-sair" onclick="window.location.href='/menu'">
+        Voltar para o Menu
+    </button>
+</div>
+
+<script th:inline="javascript">
+
+    console.log("Dados recebidos:");
+    console.log("Tipos de materiais:", /*[[${tiposMateriais}]]*/ []);
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const hoje = new Date();
+        const trintaDiasAtras = new Date();
+        trintaDiasAtras.setDate(hoje.getDate() - 30);
+
+
+        document.getElementById('dataInicial').value = formatDateForInput(trintaDiasAtras);
+        document.getElementById('dataFinal').value = formatDateForInput(hoje);
+
+
+        const select = document.getElementById('tipoMaterial');
+        if (select.options.length <= 2) { // 1 para placeholder + 1 para "Nenhum cadastrado"
+            console.warn("Nenhum tipo de material disponível");
+        }
+    });
+
+    function gerarRelatorio(formato) {
+        const tipoMaterial = document.getElementById('tipoMaterial').value;
+        const dataInicial = document.getElementById('dataInicial').value;
+        const dataFinal = document.getElementById('dataFinal').value;
+
+        if (!tipoMaterial || !dataInicial || !dataFinal) {
+            alert('Por favor, preencha todos os campos!');
+            return;
+        }
+
+
+        const dataInicialISO = new Date(dataInicial).toISOString();
+        const dataFinalISO = new Date(dataFinal + 'T23:59:59').toISOString();
+
+
+        window.location.href = `/relatorio/gerar-relatorio?dataInicial=${encodeURIComponent(dataInicialISO)}&dataFinal=${encodeURIComponent(dataFinalISO)}&tipoMaterial=${encodeURIComponent(tipoMaterial)}&formato=${formato}`;
+    }
+
+    function formatDateForInput(date) {
+        const d = new Date(date);
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        const year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</body>
+</html>
